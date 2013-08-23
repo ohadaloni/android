@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.theora.MedLog"
+      android:versionCode="883"
+      android:versionName="2.6">
+    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <application android:icon="@drawable/icon" android:label="MedLog">
+        <activity android:name=".MedLogApp" android:label="MedLog">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.theora.M.AppsByOhad"></activity>
+        <activity android:name="com.theora.M.MedLog"></activity>
+        <activity android:name="com.theora.M.NewMed"></activity>
+        <activity android:name="com.theora.M.DupMed"></activity>
+        <activity android:name="com.theora.M.MedEdit"></activity>
+        <activity android:name="com.theora.M.MedHistory"></activity>
+        <activity android:name="com.theora.M.MedExport"></activity>
+        <service android:name="com.theora.M.MedLogNagger" />
+    </application>
+</manifest>

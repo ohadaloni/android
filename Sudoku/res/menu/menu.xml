@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   <item android:id="@+id/settings"
+      android:title="@string/settings_label"
+      android:alphabeticShortcut="@string/settings_shortcut" />
+   <item android:id="@+id/resetHistory"
+      android:title="Reset History"
+      android:alphabeticShortcut="r" />
+   <item android:id="@+id/rateMe"
+      android:title="Rate this Application"
+   />
+   <item android:id="@+id/tellAfriend"
+      android:title="Tell a Friend"
+   />
+   <item android:id="@+id/appsByOhad"
+      android:title="Other Applications"
+   />
+</menu>
