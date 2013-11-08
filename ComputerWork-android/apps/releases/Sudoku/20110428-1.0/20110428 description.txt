@@ -1,0 +1,6 @@
+Yet another Sudoku.
+Colorful hints to quickly run through the obvious tiles.
+Guitar and piano notes indicate how successful your moves are.
+A pleasurable user interface experience.
+See if you can identify the background music and the winning tune.
+Feature requests and other improvement suggestions are welcome.

@@ -1,0 +1,14 @@
+The best free Sudoku on the android market.
+Three difficulty levels.
+Unlimited number of puzzles to solve in each.
+Automatically remembers the state of the last game, press continue to complete it.
+Starting numbers show in yellow.
+It will not let you change a starting tile or enter a number that goes against the rules of the game.
+Touch keypad only shows numbers that accord with the rules.
+Blocks that are left with one option only are highlighted
+so you can breeze through them quickly.
+Guitar and piano notes provide feedback to your moves.
+Silent mode lets you play at work, at night or in school.
+If you still play Sudoku on paper sometimes, this one will definitely spoil you.
+Can you identify the background music?
+Can you tell where the winning tune was taken from?

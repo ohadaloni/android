@@ -1,0 +1,7 @@
+Added SQLite history database.
+Click on past game to play it from previously played games.
+Show win/lose statistics.
+Drill down statistics to see selected history 
+based on difficulty level.
+Added blue theme.
+Created pagoda background for main menu.

@@ -1,0 +1,10 @@
+Yet another Sudoku.
+Three difficulty levels.
+Unlimited number of puzzles to solve in each.
+Automatically remembers the state of the last game, press continue to complete it.
+Starting numbers show in yellow.
+Touch keypad only shows numbers that accord with the rules.
+Guitar and piano notes provide feedback to your moves.
+Silent mode lets you play in class, at work or at night.
+Can you identify the background music?
+Can you tell where the winning tune was taken from?

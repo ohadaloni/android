@@ -1,0 +1,4 @@
+Added SQLite history database.
+Select to play from previously played games.
+Show win/lose statistics.
+Restart current game. 

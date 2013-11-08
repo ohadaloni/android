@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<questions>
+	<question>
+		<file>nautilus.jpg</file>
+		<options>
+			<option>lemur.jpg</option>
+			<option>mussel.jpg</option>
+			<option>locust.jpg</option>
+		</options>
+	</question>
+	<question>
+		<file>mole.jpg</file>
+		<options>
+			<option>rattlesname.jpg</option>
+			<option>mule.jpg</option>
+			<option>seal.jpg</option>
+		</options>
+	</question>
+</questions>
