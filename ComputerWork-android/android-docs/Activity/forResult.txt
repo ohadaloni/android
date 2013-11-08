@@ -1,0 +1,10 @@
+result can be passed as (int) or a (int, Intent)
+integer result must be 1 or higher
+Intent i = new Intent();
+i.putExtra("Add.instanceId", 1962);
+setResult(1961);
+setResult(1961, i);
+with Intent, you can bundle just about anything,
+and later regain it from the calling activity
+with: 
+onActivityResult(). see class M.Add

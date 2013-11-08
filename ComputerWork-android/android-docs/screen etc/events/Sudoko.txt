@@ -1,0 +1,4 @@
+1. in puzzlview - onTouchEvent receives direct x,y coordinate.
+2. in keypad - setOnClickListener of a particular key
+is set with a small callback that collects which key in the nested setup loop.
+This is probably the way to go with the Mview table view, form view, etc.

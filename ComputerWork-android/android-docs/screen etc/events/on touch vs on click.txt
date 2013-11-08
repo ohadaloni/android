@@ -1,0 +1,14 @@
+5/5/11
+I noticed with TableRow that
+ontouch returning true causes onclick to never get called
+
+ontouch is called multiple times with separate Motion.action as described in
+   http://www.anddev.org/android-2d-3d-graphics-opengl-problems-f55/ontouch-is-called-twice-aftr-single-click-on-image-in-canvas-t48427.html
+   Re: ontouch is called twice aftr single click on image in ca
+
+	Postby Schermvlieger » Wed Oct 27, 2010 11:01 am
+	just check the value coming back from event.getAction() and compare with the constants for the MotionEvent class:
+
+	http://developer.android.com/reference/ ... Event.html
+	
+So I ended up using onClick for now, as it is called exactly once without having to check the event.

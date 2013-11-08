@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   <item android:id="@+id/comeHere"
+      android:icon="@drawable/come_here64"
+      />
+   <item android:id="@+id/goToCar"
+      android:icon="@drawable/vw64"
+      />
+   <item android:id="@+id/toggleCompass"
+      android:title="Compass On/Off" 
+      android:icon="@drawable/compass64"
+      />
+   <item android:id="@+id/zoom"
+      android:icon="@drawable/zoom64"
+      />
+   <item android:id="@+id/listSpots"
+      android:icon="@drawable/list64"
+      />
+   <item android:id="@+id/smsMyLocation"
+      android:title="SMS My Location"
+      />      
+   <item android:id="@+id/satellite"
+      android:title="Satellite On/Off"
+      />      
+   <item android:id="@+id/traffic"
+      android:title="Traffic On/Off" 
+      />      
+   <item android:id="@+id/otherApps"
+      android:title="Other Appications" 
+      />      
+</menu>

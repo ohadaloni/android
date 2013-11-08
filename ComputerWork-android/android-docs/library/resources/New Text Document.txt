@@ -1,0 +1,9 @@
+can resources from M be referred to as M.R.raw.piano_3l
+just like this:
+
+private void setAdapters() {
+// Spinner list comes from a resource,
+// Spinner user interface uses standard layouts
+ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+this, R.array.languages,
+android.R.layout.simple_spinner_item);

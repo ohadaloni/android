@@ -1,0 +1,32 @@
+redpill advertizing -
+    1. a bar at the bottom of the screen shows up with a message and two side icons:
+        on the right - the blue pill - means reject this ad
+        on the left - the red pill - means follow this ad
+        in between -  a promotinal sentence
+    2. redpill. jar 
+        onCreate() of the activity:
+            new RedPill();
+    3. when the ad bar is shown, the settings menu allows you to: 
+        1. never see this message again.
+           a local sqlite db of texts keeps stats of message views,
+           including a noShow flag.
+                serverMsgId
+                msg
+                lastViewed
+                redsTotal
+                bluesTotal
+                dont
+        2. view and edit this table
+        3. turn off redpill advertizing altogether
+    4. for testing, the app can show a button that activates the redpill system.
+    5. process:
+        1. a request is made to the ads server with localization info
+            and a list of donts (?) 
+        2. the reply is empty or a serverMsgId/msg pair 
+        3. on go, the server receives back the serverMsgId and returns a url 
+           to show in the phone's browser.
+        4. Intially, the returned web page will be a page at
+            theora.com advertzing the next app and pointing to the apps' page
+            on the android market.
+        5.  All tracking info is kept on the server.
+        6. server tracking info is used to decide which ads are shown.

@@ -1,0 +1,354 @@
+package com.theora.M;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Handler.Callback;
+import android.util.Log;
+/*------------------------------------------------------------*/
+public class MedLogUtils {
+	/*------------------------------------------------------------*/
+	public static final String tag = "MedLog";
+	public static final String medName =  "com.theora.MedLog.name";
+	public static final String nag =  "com.theora.MedLog.nag";
+	public static final String isNag =  "com.theora.MedLog.isNag";
+	private final static long testNagIterationIntervalInMillis = 1*60*1000;
+	private final static long runNagIterationIntervalInMillis = 2*60*1000;
+	private final static long testNagMillisBeforeFirstTime = 10*1000;
+	private final static long runNagMillisBeforeFirstTime = 30*1000;
+	private final static int testSecondsTillNextNag = 20;
+	private final static int runSecondsTillNextNag = 5*60;
+	private final static int nagWhatMagic = 1961021573;
+	/*------------------------------------------------------------*/
+//	public static boolean testMode = true; 
+	public static boolean testMode = false; 
+	public final static long nagMillisBeforeFirstTime =
+		( MedLogUtils.testMode ? testNagMillisBeforeFirstTime : runNagMillisBeforeFirstTime);
+	public final static long nagIterationIntervalInMillis =
+		( MedLogUtils.testMode ? testNagIterationIntervalInMillis : runNagIterationIntervalInMillis);
+	public final static long secondsTillNextNag = ( testMode ? testSecondsTillNextNag : runSecondsTillNextNag);
+	/*------------------------------------------------------------*/
+	private Mcontroller m;
+	private Activity a = null;
+	private Handler nagHandler;
+	private boolean nagAlertIsOpen = false;
+	private Mp3 nagPlayer = null;
+	/*------------------------------------------------------------*/
+	public MedLogUtils(Activity a) {
+		this.a = a;
+		m = new Mcontroller(a, "mdb");
+	}
+	/*---------------------------------------*/
+	public MedLogUtils(Context ctx) {
+		m = new Mcontroller(ctx, "mdb");
+	}
+	/*------------------------------------------------------------*/
+	public void createTables() {
+//		m.model.sql("drop table if exists medLog");
+		String sql1 = "create table if not exists medLog (" +
+			"id integer primary key autoincrement" +
+			", name char(80) collate nocase" +
+			", whence datetime" +
+			" )";
+		m.model.sql(sql1);
+//		m.model.sql("drop table if exists medLogMeds");
+		String sql2 = "create table if not exists medLogMeds (" +
+			"id integer primary key autoincrement" +
+			", name char(80) collate nocase" +
+			", lastTaken datetime" +
+			", nag varchar(8)" +
+			", lastNagged int" +
+			", unique (name)" +
+			" )";
+		m.model.sql(sql2);
+	}
+	/*------------------------------------------------------------*/
+	public void newMedEntry(String med) {
+		String now = Mtime.dateTimeNow();
+		String dbMed = m.model.str(med);
+		String medIdSql = String.format("select id from medLogMeds where name = '%s'", dbMed);
+		int medId = m.model.getInt(medIdSql);
+		if ( medId > 0 ) {
+			String sql = String.format("update medLogMeds set lastTaken = '%s' where id = %d", now, medId);
+			m.model.sql(sql);
+		} else {
+			String sql = String.format("insert into medLogMeds ( name, lastTaken, nag ) values ( '%s' , '%s', 'false' )", dbMed, now);
+			m.model.sql(sql);
+		}
+		String sql = String.format("insert into medLog ( name, whence ) values ( '%s' , '%s' )", dbMed, now);
+		m.model.sql(sql);
+    	m.utils.logInfo();
+	}
+	/*------------------------------------------------------------*/
+	private String helpText = "Start logging the medications you are taking by" +
+		" entering the name of a medication you are now taking." +
+		" Once a medication is known, you will never need to type it again." +
+		" The main view shows the last time you took each medication." +
+		" Click a medication when you are taking it again." +
+		" Long press a medication for more options." +
+		" Press the menu button to enter a new medication." +
+		" Edit the name of a medication by long pressing it in the main view." +
+		" Edit the time it was taken by first selecting history, then long press" +
+		" the instance you want to change.";
+	/*-----------------------------*/
+	public void help(Mcallback ok) {
+		m.view.alert(helpText, ok);
+	}
+	/*-----------------------------*/
+	public void help() {
+		m.view.alert(helpText);
+	}
+	/*------------------------------------------------------------*/
+	public String timeFmt(String value) {
+		String datetime[] = value.split(" ");
+		String ymd[] = datetime[0].split("-");
+		String hmsf[] = datetime[1].split("\\.");
+		String hms[] = hmsf[0].split(":");
+		int d = Integer.parseInt(ymd[2]);
+		int m = Integer.parseInt(ymd[1]);
+		int hh = Integer.parseInt(hms[0]);
+		String hm;
+		if ( MedLog.ampm() ) {
+			String ampm = ( hh <= 11 ) ? "AM" : "PM" ;
+			 if ( hh == 0 )
+			 	hh = 12 ;
+			else if ( hh > 12 )
+				hh -= 12;
+			hm = "" + hh + ":" + hms[1] + " " + ampm ;
+		} else
+			hm = "" + hh + ":" + hms[1];
+		String ret = "" + m + "/" + d + " " + hm;
+		return(ret);
+	}
+	/*------------------------------------------------------------*/
+	public void deleteEntireHistory() {
+		m.utils.logInfo("deleteEntireMedHistory");
+		m.model.sql("delete from medLog");
+		m.model.sql("delete from medLogMeds");
+	}
+	/*------------------------------------------------------------*/
+	public void deleteEntireHistory(String med) {
+		m.utils.logInfo();
+		String where = " where name = '" + m.model.str(med) + "'";
+		m.model.sql("delete from medLog " + where);
+		m.model.sql("delete from medLogMeds " + where);
+	}
+	/*------------------------------------------------------------*/
+	public void nag(String med, boolean tf) {
+		String nagValue = ( tf ? "true" : "false" );
+		m.utils.logInfo(nagValue);
+		String dbMed = m.model.str(med);
+		String sql = "update medLogMeds set nag = '" + nagValue + "' where name = '" + dbMed + "'";
+		m.model.sql(sql);
+	}
+	/*------------------------------------------------------------*/
+	public void dupMed(String med) {
+		m.utils.logInfo();
+		Intent i = new Intent(a, DupMed.class);
+		i.putExtra(MedLogUtils.medName, med);
+		a.startActivity(i);
+	}
+	/*------------------------------------------------------------*/
+	public void medEdit(String med) {
+		m.utils.logInfo();
+		Intent i = new Intent(a, MedEdit.class);
+		i.putExtra(MedLogUtils.medName, med);
+		a.startActivity(i);
+	}
+	/*------------------------------------------------------------*/
+	public void deleteEntry(int rowId, final McallbackWithInt numLeftAfter) {
+		final MmodelRow row = m.model.getById("medLog", rowId);
+		if ( row == null ) {
+			m.utils.logError("Entry Not found");
+			if ( numLeftAfter != null )
+				numLeftAfter.f(0);
+			return;
+		}
+		Mcallback onConfirm = new Mcallback() {
+			@Override
+			public void f() {
+				m.utils.logInfo("deleteEntry");
+				m.model.delete("medLog", row.id());
+				String med = row.getString("name");
+				String dbMed = m.model.str(med);
+				String sql = String.format("select count(*) from medLog where name = '%s'", dbMed);
+				int numLeft = m.model.getInt(sql);
+				if ( numLeft == 0 ) {
+					sql = String.format("delete from medLogMeds where name = '%s'", dbMed);
+					m.model.sql(sql);	
+				}
+				if ( numLeftAfter != null )
+					numLeftAfter.f(numLeft);
+			}
+		};
+		m.view.confirm("Delete " + medDescription(row), "Are you sure?", onConfirm);
+	}
+	/*-------------------------------*/
+	public void deleteLast(String med, McallbackWithInt numLeftAfter) {
+		String dbMed = m.model.str(med);
+		String sql = String.format("select id from medLog where name = '%s' order by id desc limit 1", dbMed);
+		int rowId = m.model.getInt(sql);
+		deleteEntry(rowId, numLeftAfter);
+	}
+	/*-------------------------------*/
+	public void deleteLast(String med) {
+		deleteLast(med, null);
+	}
+	/*------------------------------------------------------------*/
+	public String medDescription(MmodelRow row) {
+		if ( row == null )
+			return("?");
+		String med = row.getString("name");
+		String whence = timeFmt(row.getString("whence"));
+		String medDescription = med + ": " + whence;
+		return(medDescription);
+	}
+	/*------------------------------------------------------------*/
+	public String medDescription(int rowId) {
+		return(medDescription(m.model.getById("medLog", rowId)));
+	}
+	/*------------------------------------------------------------*/
+	public void log(String msg) {
+		Log.d(tag, msg);
+	}
+	/*------------------------------------------------------------*/
+	public void updateLastTaken(String med) {
+		String dbMed = m.model.str(med);
+		String sql = String.format("select whence from medLog where name = '%s' order by whence desc limit 1", dbMed);
+		String lastTaken = m.model.getString(sql);
+		String usql = String.format("update medLogMeds set lastTaken = '%s' where name = '%s'", lastTaken, dbMed);
+		m.model.sql(usql);
+	}
+	/*------------------------------------------------------------*/
+	public void changeMedName(String oldName, String newName) {
+		String oldDb = m.model.str(oldName);
+		String newDb = m.model.str(newName);
+		String tables[] = { "medLogMeds", "medLog" };
+		String set = String.format(" set name = '%s' where name = '%s'", newDb, oldDb);
+		for ( String table : tables ) {
+			String sql = "update " + table + set ;
+			m.model.sql(sql);
+		}
+	}
+	/*------------------------------------------------------------*/
+	/**
+	 * return the first medication to nag about at this time, if any
+	 */
+	public String nagNeeded() {
+		String meds[] = m.model.getStrings("select name from MedLogMeds where nag = 'true'");
+		for( String med : meds ) {
+			if ( nagNeeded(med) )
+				return(med);
+		}
+		return(null);
+	}
+	/*------------------------------------------------------------*/
+	/**
+	 * is a nag needed for this med.
+	 */
+	private boolean nagNeeded(String med) {
+		String dbMed = m.model.str(med);
+		String sql = String.format("select lastNagged from medLogMeds where name = '%s'", dbMed);
+		int lastNagged = m.model.getInt(sql);
+		int now = Mdate.time();
+		if ( lastNagged >  0 && (now - lastNagged ) < secondsTillNextNag )
+				return(false);
+		sql = String.format("select whence from medLog where name = '%s' order by whence desc limit 2", dbMed);
+		String times[] = m.model.getStrings(sql);
+		if ( times == null || times.length != 2 )
+			return(false);
+		int last = Mdate.datetimeToUnixTime(times[0]);
+		int prev = Mdate.datetimeToUnixTime(times[1]);
+		int interval = last - prev;
+		int since = now - last;
+		if ( since < ( interval + interval / 12 ) )
+			return(false);
+		return(true);
+	}
+	/*------------------------------------------------------------*/
+	private void tryNagging() {
+		if ( nagHandler == null )
+			return;
+		String med = nagNeeded();
+		if ( med != null )
+			nag(med);
+	}
+	/*------------------------------------------------------------*/
+	public void nag(String med) {
+		int now = Mdate.time();
+		String dbMed = m.model.str(med);
+		String sql = String.format("update medLogMeds set lastNagged = '%d' where name = '%s'", now,  dbMed);
+		m.model.sql(sql);
+		if ( nagPlayer == null )
+			nagPlayer = new Mp3(a, "medlognag");
+		nagPlayer.play();
+		if ( nagAlertIsOpen )
+			return;
+		nagAlertIsOpen = true;
+		m.view.alert("Medication nag: " + med, new Mcallback() {
+			@Override
+			public void f() {
+				nagAlertIsOpen = false;
+				if ( nagPlayer != null )
+					nagPlayer.stop();
+			}
+		});
+	}
+	/*------------------------------------------------------------*/
+	public void stopInAppNagger() {
+		if ( nagHandler != null )
+			nagHandler.removeMessages(nagWhatMagic);
+		nagHandler = null;
+	}
+		/*------------------------------------------------------------*/
+	public void startInAppNagger() {
+		nagHandler = new Handler(new Callback() {
+			@Override
+			public boolean handleMessage(Message msg) {
+				tryNagging();
+				nagHandler.sendEmptyMessageDelayed(nagWhatMagic, MedLogUtils.nagIterationIntervalInMillis);
+				return(true);
+			}
+		});
+		nagHandler.sendEmptyMessageDelayed(nagWhatMagic, MedLogUtils.nagMillisBeforeFirstTime);
+		
+	}
+	/*------------------------------------------------------------*/
+	private void initConfig() {
+		String sql = "create table if not exists medLogConfig (" +
+		"id integer primary key autoincrement" +
+		", configName char(80)" +
+		", configValue char(255)" +
+		", unique (configName)" +
+		" )";
+		m.model.sql(sql);
+	}
+	/*------------------------------------------------------------*/
+	public String getConfig(String configName) {
+		initConfig();
+		String sql = String.format("select configValue from medLogConfig where configName = '%s'", configName);
+		String value = m.model.getString(sql);
+		return(value);
+	}
+	/*------------------------------------------------------------*/
+	public boolean setConfig(String configName, String configValue) {
+		initConfig();
+		String sql = String.format("delete from medLogConfig where configName = '%s'", configName);
+		m.model.sql(sql);
+		String nv[][] = {
+				{"configName", configName },
+				{"configValue", configValue }
+		};
+		int id = m.model.insert("medLogConfig", nv);
+		return(id > 0);
+	}
+	/*------------------------------------------------------------*/
+	public void export() {
+		m.utils.logInfo();
+		a.startActivity(new Intent(a, MedExport.class));
+
+	}
+	/*------------------------------------------------------------*/
+}

@@ -1,0 +1,1 @@
+http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=this woman was kind to me&langpair=en|he

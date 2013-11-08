@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.theora.M"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <application android:icon="@drawable/icon" android:label="M">
+		<receiver android:name=".BootCompletedReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
+        <activity android:name=".Mactivity"
+                  android:label="M">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="Asimov"></activity>
+        <activity android:name="Adams"></activity>
+        <activity android:name="Dahl"></activity>
+        <activity android:name="Lem"></activity>
+        <activity android:name="Add"></activity>
+        <activity android:name="AddHistory"></activity>
+        <activity android:name="AppsByOhad"></activity>
+        <activity android:name="Nautilus"></activity>
+        <activity android:name="Christie"></activity>
+        <activity android:name="NautilusQuestionSetParserTest"></activity>
+        <activity android:name="Browse"></activity>
+        <activity android:name="MedLog"></activity>
+        <activity android:name="NewMed"></activity>
+        <activity android:name="DupMed"></activity>
+        <activity android:name="MedExport"></activity>
+        <activity android:name="MedHistory"></activity>
+        <service android:name="MedLogNagger"/>
+        <activity android:name="MedEdit"></activity>
+    </application>
+</manifest>

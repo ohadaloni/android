@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.theora.Spots" android:versionCode="286" android:versionName="2.8">
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+   <uses-permission android:name="android.permission.INTERNET"/>
+   <uses-permission android:name="android.permission.VIBRATE"/>
+   <application android:icon="@drawable/icon" android:label="Spots">
+      <activity android:name="Spots" android:label="Spots" >
+         <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+         </intent-filter>
+         <intent-filter>
+			 <action android:name="android.intent.action.VIEW"></action>
+			 <data android:scheme="http" android:host="*.theora.com"></data>
+			 <category android:name="android.intent.category.DEFAULT"></category>
+		</intent-filter>         
+      </activity>
+      <uses-library android:name="com.google.android.maps"/>
+      <activity android:name="NewSpot"></activity>
+      <activity android:name="ListSpots"></activity>
+      <activity android:name="SelectZoom"></activity>
+      <activity android:name="SpotActions"></activity>
+      <activity android:name="SpotEdit"></activity>
+      <activity android:name="com.theora.M.AppsByOhad"></activity>
+      <activity android:name="Edit"></activity>
+   </application>
+   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8"/>
+</manifest>

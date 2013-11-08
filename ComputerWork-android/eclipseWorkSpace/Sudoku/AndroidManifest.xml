@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.theora.sudoku" android:versionCode="884"
+	android:versionName="5.3">
+	<uses-sdk android:minSdkVersion="8" />
+	<uses-library android:name="com.theora.M" />
+	<uses-permission android:name="android.permission.INTERNET"/>	
+	<application android:icon="@drawable/icon" android:label="@string/app_name">
+		<activity android:name=".Sudoku" android:label="@string/app_name">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".About" android:label="@string/about_title"
+			android:theme="@android:style/Theme.Dialog"
+			>
+		</activity>
+		<activity android:name=".Prefs" android:label="@string/settings_title"></activity>
+		<activity android:name=".Game" android:label="@string/game_title" />
+		<activity android:name=".Statistics" android:label="Statistics" />
+		<activity android:name=".History" android:label="History" />
+		<activity android:name="com.theora.M.AppsByOhad"></activity>
+	</application>
+</manifest>

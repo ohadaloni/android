@@ -1,0 +1,11 @@
+A SQLite database is just a file. You can take that file, move it around,
+and even copy it to another system (for example, from your phone
+to your workstation), and it will work fine. Android stores the file in
+the /data/data/packagename/databases directory (see Figure 9.1, on the
+next page).
+
+You can use the adb command or the
+
+File Explorer view in
+Eclipse (Window > Show View > Other... > Android > File Explorer) to
+view, move, or delete it.

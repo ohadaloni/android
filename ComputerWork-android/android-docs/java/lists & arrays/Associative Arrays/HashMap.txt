@@ -1,0 +1,6 @@
+Map map = new HashMap();
+map.put("itemType", "auto");
+map.put("subtype" , "4WD");
+map.put("make"    , "Jeep");
+map.put("year"    , "1998");
+map.put("color"   , "green");

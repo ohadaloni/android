@@ -1,0 +1,6 @@
+1. export to desktop/M.jar:
+     1. right click M
+	 2. export only src to java and class files, make sure manifest.xml and othjer things are not checked.
+	 3. Add M.jar to $project/libs (by dragging in ecplise. this creates also a referenced libs entry in $project
+	 4. add uses-library to $project/androidmanifest.xml:
+	         <uses-library android:name="com.theora.M" />

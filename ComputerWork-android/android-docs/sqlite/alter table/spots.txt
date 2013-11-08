@@ -1,0 +1,21 @@
+
+I wanted to change the column to 'collate nocase' so that order by is case insensitive
+after finding out sqlite is not handeling alter column
+I started with:
+		m.model.sql("alter table spots add collateLabel char(80) collate nocase");
+		m.model.sql("update spots set collateLabel = label");
+
+but instead ended up with:
+
+	    m.model.sql("alter table spots rename to oldSpots");
+	    int n = m.model.rowNum("oldSpots");
+	    m.util.msg("oldSpots rows: " + n);
+		// created the new table ... then
+		String pass = "insert into spots ( label, latitude, longitude, zoomLevel, created, updated ) " +
+		    "select label, latitude, longitude, zoomLevel, created, updated from oldSpots" ;
+		 m.model.sql(pass);
+	    n = m.model.rowNum("spots");
+	    m.util.msg("spots rows: " + n);
+		// m.model.sql("drop table spots");
+
+each statemewnt was run in a separate aplication run, reporting its success.

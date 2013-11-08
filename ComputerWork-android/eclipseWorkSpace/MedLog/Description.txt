@@ -1,0 +1,31 @@
+Keep a log of medications your are taking with ease.
+Exceptionally simple and easy user interface.
+Recording what medications you are taking has never been this easy.
+Type in the name of the medication you are taking once,
+when you take it for the first time,
+and you will never need to type it again.
+Turn on the NAG ME feature for a medication
+and it will gently nag if you are missing your regular schedule.
+No need to tell it when you are supposed to take a medication,
+or when you want to be reminded.
+Shortly after you were supposed to take a medication and didn't,
+it will start gently nagging you with music,
+and a popup will tell you which medication you are missing.
+The main display shows the last time you took each medication.
+With a quick click and confirm, you record that you are now taking it again.
+With a longer tap you can see the history for a medication and change details if need be.
+
+
+Free and Ad free.
+
+This application does not attempt to access the SD card under any circumstances.
+
+Regarding Editing:
+To change the name of a medication, pick 'change name' from the long press menu in the main view. This will change the name of the medication and will reflect throughout the history of this medication.
+To change the date and/or time for a particular instance,
+choose History from the long-press menu.
+In the medication history view, long press the date/time item you wish to edit. This might be the last time you took this medication,  but you can also change any earlier entry.
+If you are placing a log several hours after it actually took place, follow these steps:
+1. enter medication now.
+2. long press History.
+3. long press the first row (this last entry should show) and pick 'Set Time'.
